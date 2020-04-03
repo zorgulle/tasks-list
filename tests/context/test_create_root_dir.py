@@ -16,5 +16,3 @@ def test_create_root_dir():
         os.removedirs(ROOT_PATH)
     else:
         assert False
-
-

@@ -1,5 +1,9 @@
 from src.context.environement import ROOT_DIR_VAR_NAME
 import os
+import shutil
+import logging
+logger = logging.getLogger(__file__)
+
 
 ROOT_PATH = "/tmp/toto"
 
@@ -14,8 +18,22 @@ def unset_env_var():
 
 def set_env(func):
     def wrapper(*args, **kwargs):
-        set_env_var()
+        setup_env()
         r = func(*args, **kwargs)
-        unset_env_var()
+        clean_env()
         return r
     return wrapper
+
+def clean_dir():
+    try:
+        shutil.rmtree(ROOT_PATH)
+    except:
+        logger.warning("Fail to remove %s", ROOT_PATH)
+
+def clean_env():
+    unset_env_var()
+    clean_dir()
+
+def setup_env():
+    set_env_var()
+    clean_dir()
